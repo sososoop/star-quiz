@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#101735">
+<title>별과 우주 시험 대비</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css">
+<style>
+  :root{
+    --bg:#101735; --bg2:#18224a; --panel:#ffffff; --ink:#1f2540; --sub:#6a7192;
+    --line:#e3e6f2; --soft:#f3f5fb; --gold:#ffc83d; --o:#2f7cf6; --x:#f0525a;
+    --ok:#1fa971; --ng:#e5484d; --accent:#7c5cff;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;height:100%;}
+  body{background:var(--bg);color:#fff;font-family:'Pretendard','Apple SD Gothic Neo',sans-serif;
+    touch-action:manipulation;-webkit-text-size-adjust:100%;overscroll-behavior:none;}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.55;
+    background-image:radial-gradient(1.5px 1.5px at 12% 18%,#fff,transparent),radial-gradient(1px 1px at 72% 9%,#fff,transparent),
+    radial-gradient(1.2px 1.2px at 40% 32%,#cfd8ff,transparent),radial-gradient(1px 1px at 88% 44%,#fff,transparent),
+    radial-gradient(1.4px 1.4px at 22% 68%,#fff,transparent),radial-gradient(1px 1px at 60% 78%,#cfd8ff,transparent),
+    radial-gradient(1.2px 1.2px at 92% 88%,#fff,transparent),radial-gradient(1px 1px at 6% 92%,#fff,transparent);}
+  #app{position:relative;z-index:1;max-width:480px;margin:0 auto;min-height:100%;
+    padding:calc(env(safe-area-inset-top) + 14px) 16px calc(env(safe-area-inset-bottom) + 16px);display:flex;flex-direction:column;}
+  button{font-family:inherit;border:0;cursor:pointer;}
+  .hide{display:none!important;}
+
+  /* 홈 */
+  .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+  .brand{font-size:13px;color:#aab3e0;letter-spacing:.04em;}
+  .dday{background:var(--x);color:#fff;font-weight:800;font-size:13px;padding:5px 10px;border-radius:999px;}
+  h1{font-size:26px;line-height:1.25;margin:6px 0 4px;font-weight:800;letter-spacing:-.01em;}
+  .lead{color:#aab3e0;font-size:14px;margin:0 0 14px;}
+  .summary{display:flex;gap:10px;margin-bottom:16px;}
+  .summary div{flex:1;background:var(--bg2);border-radius:14px;padding:10px 12px;}
+  .summary b{display:block;font-size:20px;color:var(--gold);}
+  .summary span{font-size:12px;color:#aab3e0;}
+  .name{display:flex;align-items:center;gap:8px;background:var(--bg2);border-radius:14px;padding:8px 12px;margin-bottom:16px;}
+  .name label{font-size:13px;color:#aab3e0;white-space:nowrap;}
+  .name input{flex:1;background:transparent;border:0;border-bottom:1px solid #3a4680;color:#fff;font-size:16px;padding:4px 2px;font-family:inherit;outline:none;}
+  .stage{background:var(--panel);color:var(--ink);border-radius:20px;padding:14px 14px 10px;margin-bottom:14px;position:relative;}
+  .stage-h{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .planet{width:38px;height:38px;border-radius:50%;flex:none;box-shadow:inset -6px -6px 0 rgba(0,0,0,.12);}
+  .stage-h b{font-size:17px;display:block;}
+  .stage-h small{font-size:12px;color:var(--sub);}
+  .mode{display:flex;align-items:center;width:100%;background:var(--soft);border-radius:14px;padding:13px 14px;margin-bottom:8px;
+    font-size:16px;font-weight:700;color:var(--ink);text-align:left;min-height:54px;}
+  .mode .ic{font-size:20px;width:30px;}
+  .mode .nm{flex:1;}
+  .mode .st{font-size:15px;letter-spacing:1px;color:#d5d9e8;}
+  .mode .st i{font-style:normal;color:var(--gold);}
+  .boss{background:linear-gradient(135deg,#7c5cff,#2f7cf6);color:#fff;}
+  .boss .mode{background:rgba(255,255,255,.16);color:#fff;}
+  .boss .stage-h small{color:#e2e0ff;}
+  .boss .mode .st{color:rgba(255,255,255,.4);}
+  .wrongbtn{display:flex;align-items:center;justify-content:space-between;width:100%;background:var(--bg2);color:#fff;border-radius:16px;
+    padding:15px 16px;font-size:16px;font-weight:700;margin-bottom:14px;min-height:54px;}
+  .wrongbtn span{background:var(--x);border-radius:999px;font-size:13px;padding:3px 10px;}
+  .foot{text-align:center;font-size:12px;color:#7480b8;margin-top:auto;padding-top:10px;}
+
+  /* 문제 화면 */
+  .qhead{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .close{width:40px;height:40px;border-radius:12px;background:var(--bg2);color:#fff;font-size:20px;flex:none;}
+  .qtitle{flex:1;font-size:15px;font-weight:700;}
+  .qtitle small{display:block;font-size:12px;color:#aab3e0;font-weight:500;}
+  .pill{background:var(--bg2);border-radius:999px;padding:6px 11px;font-size:13px;font-weight:700;white-space:nowrap;}
+  .pill.combo{background:var(--gold);color:#3a2a00;}
+  .prog{height:6px;background:var(--bg2);border-radius:6px;overflow:hidden;margin-bottom:8px;}
+  .prog i{display:block;height:100%;background:var(--gold);border-radius:6px;transition:width .3s;}
+  .timer{height:8px;background:#2a335e;border-radius:6px;overflow:hidden;margin-bottom:12px;}
+  .timer i{display:block;height:100%;background:linear-gradient(90deg,#1fa971,#ffc83d,#f0525a);background-size:300% 100%;border-radius:6px;}
+  .qcard{background:var(--panel);color:var(--ink);border-radius:22px;padding:22px 18px;font-size:19px;line-height:1.6;font-weight:600;
+    word-break:keep-all;min-height:160px;display:flex;flex-direction:column;justify-content:center;}
+  .qcard .tag{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;}
+  .qcard table{border-collapse:collapse;margin:10px 0 0;font-size:15px;width:100%;}
+  .qcard th,.qcard td{border:1px solid var(--line);padding:6px 8px;text-align:center;}
+  .qcard th{background:var(--soft);font-weight:700;}
+  .blank{display:inline-block;min-width:70px;border-bottom:3px solid var(--accent);margin:0 3px;height:1.2em;vertical-align:-.15em;}
+  .filled{color:var(--accent);font-weight:800;border-bottom:3px solid var(--accent);padding:0 3px;}
+  .bogi{background:var(--soft);border-radius:12px;padding:10px 12px;font-size:15px;line-height:1.7;margin-top:10px;font-weight:500;}
+  .spacer{flex:1;min-height:14px;}
+  .actions{display:flex;flex-direction:column;gap:10px;padding-top:14px;}
+  .oxrow{display:flex;gap:12px;}
+  .oxbtn{flex:1;height:110px;border-radius:24px;font-size:56px;font-weight:900;color:#fff;box-shadow:0 6px 0 rgba(0,0,0,.25);}
+  .oxbtn:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.25);}
+  .oxbtn.o{background:var(--o);} .oxbtn.x{background:var(--x);}
+  .opt{width:100%;background:var(--panel);color:var(--ink);border-radius:16px;padding:14px 16px;font-size:16px;font-weight:600;
+    text-align:left;line-height:1.45;min-height:54px;display:flex;gap:10px;align-items:flex-start;border:3px solid transparent;}
+  .opt b{color:var(--accent);}
+  .opt.right{border-color:var(--ok);background:#e9f8f1;}
+  .opt.wrong{border-color:var(--ng);background:#fdeced;}
+  .opt:disabled{opacity:1;}
+  .big{width:100%;min-height:56px;border-radius:16px;font-size:17px;font-weight:800;background:var(--gold);color:#3a2a00;}
+  .big.ghost{background:var(--bg2);color:#fff;}
+  .big.ok{background:var(--ok);color:#fff;} .big.ng{background:var(--ng);color:#fff;}
+  .row2{display:flex;gap:10px;} .row2 .big{flex:1;}
+  .fb{border-radius:18px;padding:14px 16px;margin-top:12px;font-size:15px;line-height:1.6;word-break:keep-all;}
+  .fb.good{background:#e9f8f1;color:#0e5a3b;} .fb.bad{background:#fdeced;color:#7a1d22;}
+  .fb b{font-size:17px;display:block;margin-bottom:2px;}
+  .pop{animation:pop .25s ease;}
+  @keyframes pop{0%{transform:scale(.96);opacity:.4}100%{transform:scale(1);opacity:1}}
+  .shake{animation:shake .35s;}
+  @keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+
+  /* 결과 */
+  .result{background:var(--panel);color:var(--ink);border-radius:24px;padding:24px 18px;text-align:center;}
+  .result .stars{font-size:46px;letter-spacing:6px;color:#dde1ee;margin:4px 0 6px;}
+  .result .stars i{font-style:normal;color:var(--gold);}
+  .result h2{margin:0 0 4px;font-size:22px;}
+  .result .score{font-size:40px;font-weight:900;color:var(--accent);margin:6px 0;}
+  .result .meta{font-size:13px;color:var(--sub);line-height:1.6;}
+  .rlist{text-align:left;margin-top:14px;border-top:1px solid var(--line);padding-top:10px;}
+  .rlist div{font-size:14px;line-height:1.5;padding:8px 0;border-bottom:1px dashed var(--line);word-break:keep-all;}
+  .rlist em{font-style:normal;color:var(--ok);font-weight:700;}
+  .capture{font-size:12px;color:#aab3e0;text-align:center;margin:10px 0 0;}
+
+  /* 오답 노트 */
+  .wcard{background:var(--panel);color:var(--ink);border-radius:16px;padding:14px;margin-bottom:10px;font-size:15px;line-height:1.55;word-break:keep-all;}
+  .wcard small{color:var(--accent);font-weight:700;font-size:12px;}
+  .wcard .ans{margin-top:6px;color:var(--ok);font-weight:700;}
+  .wcard .exp{color:var(--sub);font-size:14px;margin-top:2px;}
+  .empty{text-align:center;color:#aab3e0;padding:40px 0;font-size:15px;line-height:1.7;}
+  textarea{width:100%;min-height:96px;border-radius:14px;border:2px solid var(--line);padding:10px 12px;font-size:16px;font-family:inherit;margin-top:10px;resize:vertical;}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ===================== 데이터 ===================== */
+const EXAM_DATE = new Date(2026, 9, 12);
+const STAGES = [
+  {id:"s1", name:"별의 특성", sub:"시차 · 밝기와 등급 · 색과 온도", color:"radial-gradient(circle at 35% 35%,#ffe28a,#f2a93b)"},
+  {id:"s2", name:"우리은하", sub:"구조와 크기 · 성운과 성단", color:"radial-gradient(circle at 35% 35%,#c8e6ff,#5b8fe0)"},
+  {id:"s3", name:"팽창하는 우주 · 우주 탐사", sub:"외부 은하 · 풍선 모형 · 탐사 역사", color:"radial-gradient(circle at 35% 35%,#e6d4ff,#8a5cf0)"},
+];
+
+const CARDS = {
+s1:[
+ ["관측자의 위치가 달라질 때, 먼 배경에 대하여 가까운 물체의 위치가 다르게 보이는 각도를 ___(이)라고 한다.","시차"],
+ ["시차는 관측자와 물체 사이의 거리가 가까울수록 ___.","크다"],
+ ["지구에서 별을 6개월 간격으로 관측해 측정한 시차의 1/2을 ___(이)라고 한다.","연주 시차"],
+ ["연주 시차가 생기는 까닭은 지구가 태양 주위를 ___하기 때문이다.","공전"],
+ ["연주 시차가 1″인 별까지의 거리를 ___(이)라고 한다.","1 pc(파섹)"],
+ ["1 pc은 약 ___광년이다.","3.26"],
+ ["연주 시차는 비교적 ___ 별까지의 거리를 알아낼 때 쓴다.","가까운"],
+ ["1837년에 연주 시차를 처음 측정한 과학자는 ___이다.","베셀"],
+ ["우리 눈에 보이는 별의 밝기는 거리의 ___한다.","제곱에 반비례"],
+ ["별까지의 거리가 3배가 되면 보이는 밝기는 ___배가 된다.","1/9"],
+ ["등급은 숫자가 ___ 밝은 별이다.","작을수록"],
+ ["1등급 별은 6등급 별보다 ___배 밝다.","100"],
+ ["등급이 1 차이 나면 밝기는 약 ___배 차이 난다.","2.5"],
+ ["우리 눈에 보이는 별의 밝기를 등급으로 나타낸 것을 ___(이)라고 한다.","겉보기 등급"],
+ ["별이 모두 ___ 거리에 있다고 가정했을 때의 밝기를 등급으로 나타낸 것이 절대 등급이다.","10 pc"],
+ ["겉보기 등급이 절대 등급보다 큰 별은 10 pc보다 ___ 있다.","멀리"],
+ ["실제로는 북극성이 더 밝지만 밤하늘에서 시리우스가 더 밝게 보이는 까닭은 시리우스가 지구에 더 ___ 때문이다.","가깝기"],
+ ["표면 온도가 높은 별일수록 ___을 띤다.","파란색"],
+ ["오리온자리의 리겔(청백색)과 베텔게우스(적색) 중 표면 온도가 더 높은 별은 ___이다.","리겔"],
+],
+s2:[
+ ["태양계가 속해 있는 은하를 ___(이)라고 한다.","우리은하"],
+ ["우리은하는 약 ___ 개의 별로 이루어져 있다.","2000억"],
+ ["우리은하를 위에서 보면 중심을 가로지르는 ___ 모양 구조와 나선팔이 있다.","막대"],
+ ["우리은하를 옆에서 보면 중심부가 볼록한 ___ 모양이다.","원반"],
+ ["우리은하의 지름은 약 ___ pc이다.","30000"],
+ ["태양계는 은하 중심에서 약 ___ pc 떨어진 나선팔에 있다.","8500"],
+ ["은하수는 지구에서 본 ___의 일부이다.","우리은하"],
+ ["북반구에서 은하수가 더 넓고 뚜렷하게 보이는 계절은 ___이다.","여름철"],
+ ["별과 별 사이에 퍼져 있는 가스와 티끌을 ___(이)라고 한다.","성간 물질"],
+ ["성간 물질이 많이 모여 구름처럼 뿌옇게 보이는 천체를 ___(이)라고 한다.","성운"],
+ ["주변 별빛에 가열되어 스스로 빛을 내는, 주로 붉은 성운은 ___이다.","방출 성운"],
+ ["주변 별빛을 반사해 주로 파랗게 보이는 성운은 ___이다.","반사 성운"],
+ ["뒤쪽에서 오는 별빛을 가로막아 어둡게 보이는 성운은 ___이다.","암흑 성운"],
+ ["별들이 듬성듬성 모여 있고 파란 별이 많은 성단은 ___이다.","산개 성단"],
+ ["별들이 공 모양으로 빽빽하게 모여 있고 붉은 별이 많은 성단은 ___이다.","구상 성단"],
+ ["구상 성단은 주로 은하 ___와 원반을 둘러싼 공간에 있다.","중심부"],
+],
+s3:[
+ ["우리은하 밖에 있는 은하를 ___(이)라고 한다.","외부 은하"],
+ ["1924년 ___은 거리를 재어 안드로메다 은하가 외부 은하임을 밝혔다.","허블"],
+ ["성운처럼 보이는 천체가 우리은하 안에 있는지를 두고 논쟁한 천문학자는 섀플리와 ___이다.","커티스"],
+ ["대부분의 외부 은하가 우리은하로부터 멀어지는 것은 우주가 ___하기 때문이다.","팽창"],
+ ["풍선 모형에서 풍선 표면은 ___을 나타낸다.","우주 공간"],
+ ["풍선 모형에서 붙임딱지는 ___를 나타낸다.","은하"],
+ ["우주는 모든 곳에서 고르게 팽창하므로 팽창의 ___은 없다.","중심"],
+ ["1957년에 발사된 최초의 인공위성은 ___이다.","스푸트니크 1호"],
+ ["1969년 달에 착륙한 우주선은 ___이다.","아폴로 11호"],
+ ["우주선의 충격에서 우주 비행사를 보호하려고 개발되어 지금은 생활에 쓰이는 물건은 ___이다.","메모리 폼"],
+ ["우주 탐사로 개발한 기술은 여러 ___에 응용되어 생활을 편리하게 만들었다.","산업"],
+ ["2021년 화성에 착륙해 화성의 흙을 채취한 탐사 로봇은 ___이다.","퍼서비어런스"],
+]};
+
+const OX = {
+s1:[
+ ["시차는 관측자와 물체 사이의 거리가 가까울수록 크다.",true,"가까울수록 크고, 멀수록 작아요."],
+ ["연주 시차는 6개월 간격으로 관측한 시차와 같다.",false,"연주 시차는 그 시차의 1/2이에요."],
+ ["연주 시차는 지구의 자전 때문에 생긴다.",false,"지구의 '공전' 때문에 생겨요."],
+ ["별이 지구에서 멀어지면 연주 시차는 작아진다.",true,"멀수록 연주 시차가 작아요."],
+ ["연주 시차가 1″인 별까지의 거리는 1 pc이다.",true,"1 pc ≈ 3.26광년이에요."],
+ ["연주 시차는 아주 먼 별까지의 거리를 잴 때 쓴다.",false,"먼 별은 연주 시차가 너무 작아요. 비교적 가까운 별에 써요."],
+ ["거리가 2배 멀어지면 별의 밝기는 1/2배가 된다.",false,"밝기는 거리의 제곱에 반비례 → 1/4배예요."],
+ ["등급 숫자가 클수록 밝은 별이다.",false,"숫자가 작을수록 밝아요."],
+ ["1등급 별은 6등급 별보다 100배 밝다.",true,"5등급 차이 = 100배예요."],
+ ["겉보기 등급으로 별의 실제 밝기를 비교할 수 있다.",false,"실제 밝기는 절대 등급으로 비교해요."],
+ ["절대 등급은 별이 10 pc 거리에 있다고 가정한 밝기의 등급이다.",true,"모두 같은 거리(10 pc)에 두고 비교해요."],
+ ["겉보기 등급이 절대 등급보다 큰 별은 10 pc보다 가까이 있다.",false,"겉보기 > 절대면 10 pc보다 멀리 있어요."],
+ ["별이 지구에서 멀어지면 절대 등급도 커진다.",false,"절대 등급은 거리와 상관없이 그대로예요. 겉보기 등급만 커져요."],
+ ["청색 별은 적색 별보다 표면 온도가 높다.",true,"파란색일수록 표면 온도가 높아요."],
+ ["황색 별인 태양은 청백색 별인 리겔보다 표면 온도가 높다.",false,"리겔(청백색) > 태양(황색) > 베텔게우스(적색) 순서예요."],
+ ["베텔게우스는 적색을 띠는 별이다.",true,"오리온자리의 붉은 별이에요."],
+],
+s2:[
+ ["은하수는 우리은하 밖에 있는 외부 은하이다.",false,"은하수는 지구에서 본 우리은하의 일부예요."],
+ ["우리은하는 약 2000억 개의 별로 이루어져 있다.",true,"약 2000억 개예요."],
+ ["우리은하를 옆에서 보면 중심부가 볼록한 원반 모양이다.",true,"위에서 보면 막대 구조와 나선팔이 보여요."],
+ ["태양계는 우리은하의 중심부에 있다.",false,"중심에서 약 8500 pc 떨어진 나선팔에 있어요."],
+ ["우리은하의 지름은 약 30000 pc이다.",true,"지름 약 30000 pc예요."],
+ ["북반구에서는 겨울철 은하수가 여름철보다 더 뚜렷하다.",false,"여름철에 은하 중심 방향을 봐서 여름이 더 뚜렷해요."],
+ ["성간 물질이 많이 모여 구름처럼 보이는 천체를 성단이라고 한다.",false,"그건 성운이에요. 성단은 별들의 집단이에요."],
+ ["방출 성운은 스스로 빛을 내며 주로 붉은색으로 보인다.",true,"별빛에 가열되어 스스로 빛나요."],
+ ["반사 성운은 스스로 빛을 내기 때문에 파랗게 보인다.",false,"반사 성운은 주변 별빛을 반사해요."],
+ ["암흑 성운은 뒤쪽 별빛을 가로막아 어둡게 보인다.",true,"그래서 그 부분에 별이 없는 것처럼 보여요."],
+ ["구상 성단은 별들이 듬성듬성 모여 있다.",false,"구상 성단은 공 모양으로 빽빽해요. 듬성듬성은 산개 성단이에요."],
+ ["산개 성단에는 파란색 별이 상대적으로 많다.",true,"그래서 산개 성단 별들의 평균 표면 온도가 더 높아요."],
+ ["구상 성단은 주로 우리은하의 나선팔에 있다.",false,"구상 성단은 중심부와 원반을 둘러싼 공간에 있어요."],
+ ["성운과 산개 성단은 주로 우리은하의 나선팔에 있다.",true,"성간 물질·성운·산개 성단 → 나선팔이에요."],
+],
+s3:[
+ ["우리은하 밖에 있는 은하를 외부 은하라고 한다.",true,"안드로메다 은하가 대표적이에요."],
+ ["허블은 외부 은하들이 우리은하로 가까워진다는 것을 알아냈다.",false,"대부분 멀어지고 있다는 것을 알아냈어요."],
+ ["팽창하는 우주의 중심은 우리은하이다.",false,"우주는 모든 곳에서 고르게 팽창해서 중심이 없어요."],
+ ["은하 사이가 멀어지는 것은 우주 공간이 팽창하기 때문이다.",true,"은하가 스스로 움직이는 게 아니에요."],
+ ["풍선 모형에서 붙임딱지는 우주 공간을 나타낸다.",false,"붙임딱지는 은하, 풍선 표면이 우주 공간이에요."],
+ ["풍선이 커지면 붙임딱지의 크기도 커진다.",false,"붙임딱지 크기는 그대로, 사이 간격만 멀어져요."],
+ ["1924년 허블은 안드로메다 은하가 외부 은하임을 밝혔다.",true,"윌슨산 천문대 망원경으로 거리를 쟀어요."],
+ ["20세기 초까지 사람들은 우리은하가 우주 전체라고 생각했다.",true,"외부 은하 발견으로 생각이 바뀌었어요."],
+ ["최초의 인공위성은 아폴로 11호이다.",false,"최초의 인공위성은 1957년 스푸트니크 1호예요."],
+ ["아폴로 11호는 1969년에 달에 착륙했다.",true,"1969년 달 착륙이에요."],
+ ["메모리 폼은 우주 탐사를 위해 개발한 기술에서 나왔다.",true,"우주 비행사를 충격에서 보호하려고 개발했어요."],
+ ["우주 탐사 기술은 실생활에 쓰이지 않는다.",false,"태양 전지, 인공 관절, 적외선 온도계 등에 쓰여요."],
+ ["우주는 모든 곳에서 고르게 팽창한다.",true,"그래서 어느 은하에서 봐도 다른 은하가 멀어져 보여요."],
+]};
+
+const EXAM = [
+ {q:"연주 시차에 대한 설명으로 옳은 것을 &lt;보기&gt;에서 모두 고른 것은?",bogi:"ㄱ. 지구의 공전 때문에 나타난다.<br>ㄴ. 멀리 있는 별일수록 크게 나타난다.<br>ㄷ. 6개월 간격으로 관측한 시차의 1/2이다.",opts:["ㄱ","ㄴ","ㄱ, ㄷ","ㄴ, ㄷ","ㄱ, ㄴ, ㄷ"],a:2,exp:"ㄴ은 반대예요. 가까운 별일수록 연주 시차가 커요."},
+ {q:"6개월 간격으로 관측한 시차가 0.2″인 별의 연주 시차와 거리를 옳게 짝 지은 것은?",opts:["0.1″ – 1 pc","0.1″ – 10 pc","0.2″ – 5 pc","0.4″ – 2.5 pc","0.2″ – 10 pc"],a:1,exp:"0.2 ÷ 2 = 0.1″, 거리 = 1 ÷ 0.1 = 10 pc"},
+ {q:"어떤 별이 지금보다 3배 먼 곳으로 옮겨진다면, 지구에서 보이는 밝기는 지금의 몇 배가 될까?",opts:["3배","9배","1/3배","1/6배","1/9배"],a:4,exp:"밝기는 거리의 제곱에 반비례 → 1/3² = 1/9배"},
+ {q:"2등급인 별은 7등급인 별보다 몇 배 밝게 보일까?",opts:["5배","약 2.5배","약 12.5배","25배","100배"],a:4,exp:"7 − 2 = 5등급 차이 → 100배"},
+ {q:"표는 세 별의 등급이다. 이에 대한 설명으로 옳은 것은?<table><tr><th>별</th><th>겉보기 등급</th><th>절대 등급</th></tr><tr><td>A</td><td>1</td><td>4</td></tr><tr><td>B</td><td>3</td><td>3</td></tr><tr><td>C</td><td>5</td><td>−1</td></tr></table>",opts:["가장 밝게 보이는 별은 C이다.","실제로 가장 밝은 별은 A이다.","B는 10 pc 거리에 있다.","A는 10 pc보다 멀리 있다.","가장 가까운 별은 C이다."],a:2,exp:"B는 겉보기 = 절대 → 10 pc. 가장 밝게 보이는 별은 A(겉보기 최소), 실제로 가장 밝은 별은 C(절대 최소). A는 10 pc보다 가깝고 C가 가장 멀어요."},
+ {q:"다음 별들을 표면 온도가 높은 것부터 옳게 나열한 것은?",opts:["리겔 → 태양 → 베텔게우스","태양 → 리겔 → 베텔게우스","베텔게우스 → 태양 → 리겔","리겔 → 베텔게우스 → 태양","베텔게우스 → 리겔 → 태양"],a:0,exp:"청백색(리겔) > 황색(태양) > 적색(베텔게우스)"},
+ {q:"우리은하에 대한 설명으로 옳지 <u>않은</u> 것은?",opts:["태양계가 속한 은하이다.","옆에서 보면 중심부가 볼록한 원반 모양이다.","지름은 약 30000 pc이다.","태양계는 은하 중심에 있다.","위에서 보면 막대 모양 구조와 나선팔이 있다."],a:3,exp:"태양계는 중심에서 약 8500 pc 떨어진 나선팔에 있어요."},
+ {q:"북반구에서 여름철 은하수가 겨울철보다 더 넓고 뚜렷하게 보이는 까닭은?",opts:["여름철에 지구가 태양에 가장 가깝기 때문에","여름철 밤에 은하 중심 방향을 바라보기 때문에","여름철에 별들이 지구 쪽으로 모이기 때문에","겨울철에는 성운이 별빛을 반사하기 때문에","겨울철에는 우주가 팽창하지 않기 때문에"],a:1,exp:"은하 중심부 쪽에 별이 더 많아요."},
+ {q:"성간 물질이 주변 별빛을 반사하여 주로 파랗게 보이는 성운은?",opts:["방출 성운","반사 성운","암흑 성운","산개 성단","구상 성단"],a:1,exp:"방출은 스스로 빛남(붉은색), 반사는 별빛 반사(파란색), 암흑은 가로막음이에요."},
+ {q:"산개 성단이 구상 성단보다 큰 값을 갖는 것을 &lt;보기&gt;에서 모두 고른 것은?",bogi:"ㄱ. 별들의 평균 표면 온도<br>ㄴ. 성단을 이루는 별의 수<br>ㄷ. 우리은하 나선팔에 있는 성단의 수",opts:["ㄱ","ㄴ","ㄱ, ㄷ","ㄴ, ㄷ","ㄱ, ㄴ, ㄷ"],a:2,exp:"별의 수는 구상 성단(수만~수십만 개)이 더 많아요."},
+ {q:"우주 팽창에 대한 설명으로 옳은 것은?",opts:["우리은하가 팽창의 중심이다.","외부 은하들은 대부분 우리은하로 다가온다.","은하 사이의 거리는 변하지 않는다.","우주 공간이 팽창하여 은하 사이의 거리가 멀어진다.","풍선 모형에서 붙임딱지는 우주 공간을 나타낸다."],a:3,exp:"공간이 팽창해서 은하 사이가 멀어져요. 중심은 없어요."},
+ {q:"우주 탐사를 위해 개발한 기술이 생활에 쓰인 예로 옳지 <u>않은</u> 것은?",opts:["메모리 폼","태양 전지","인공 관절","적외선 온도계","건전지"],a:4,exp:"건전지는 우주 기술에서 나온 게 아니에요."},
+];
+const ESSAYS = [
+ {q:"북극성은 시리우스보다 실제로 더 밝지만, 밤하늘에서는 시리우스가 더 밝게 보인다. 그 까닭을 거리와 관련지어 설명하시오.",ex:"겉보기 등급은 거리에 따라 달라진다. 시리우스가 북극성보다 지구에 훨씬 가까이 있어서, 실제로는 더 어두워도 밤하늘에서는 더 밝게 보인다.",pt:"“시리우스가 더 가깝다”가 들어갔나요?"},
+ {q:"어떤 별이 지구에서 점점 멀어지고 있다. 이 별의 ① 연주 시차, ② 겉보기 등급, ③ 절대 등급은 각각 어떻게 변하는지 쓰시오.",ex:"① 연주 시차는 작아진다. ② 겉보기 등급은 커진다(어둡게 보인다). ③ 절대 등급은 변하지 않는다.",pt:"세 가지가 모두 맞았나요? 특히 “절대 등급은 그대로”"},
+ {q:"사진 속 성운에서 뱀처럼 생긴 어두운 부분에는 별이 없는 것처럼 보인다. 이 성운의 종류를 쓰고, 별이 없어 보이는 까닭을 설명하시오.",ex:"암흑 성운. 성간 물질이 뒤쪽에서 오는 별빛을 가로막아서, 별이 없는 것이 아니라 가려져 어둡게 보인다.",pt:"“암흑 성운”과 “별빛을 가로막는다(가린다)”가 들어갔나요?"},
+ {q:"“팽창하는 우주에는 중심이 없다.”는 것을 풍선 모형을 이용하여 설명하시오.",ex:"풍선이 부풀면 어느 붙임딱지에서 보아도 다른 붙임딱지들이 모두 멀어진다. 우주도 모든 곳에서 고르게 팽창하므로 어느 은하에서 보아도 다른 은하가 멀어져 보인다. 따라서 특별한 중심이 없다.",pt:"“어디서 보아도 멀어진다”가 들어갔나요?"},
+];
+
+/* ===================== 계산 문제 생성 ===================== */
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const shuffle = a => { a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const fmt = x => String(parseFloat(Number(x).toFixed(4)));
+const sg = x => (x<0? "−"+fmt(-x) : fmt(x));
+function mcqFrom(q, correct, cands, exp, extra){
+  const set=[correct]; for(const c of shuffle(cands)){ if(set.length>=4) break; if(!set.includes(c)) set.push(c); }
+  const opts=shuffle(set);
+  return Object.assign({type:"mcq", id:"calc-"+Date.now()+"-"+Math.random().toString(36).slice(2,7), q, opts, a:opts.indexOf(correct), exp, calc:true}, extra||{});
+}
+function genParallax(){
+  const t=Math.floor(Math.random()*4);
+  if(t===0){ const p=pick([0.1,0.2,0.4,0.6,0.8,1,1.2]);
+    return mcqFrom(`6개월 간격으로 관측한 별의 시차가 ${fmt(p)}″예요. 이 별의 연주 시차는?`, fmt(p/2)+"″", [fmt(p)+"″",fmt(p*2)+"″",fmt(p/4)+"″",fmt(p*4)+"″"], `연주 시차 = 시차 ÷ 2 = ${fmt(p)} ÷ 2 = ${fmt(p/2)}″`,{tag:"연주 시차"}); }
+  if(t===1){ let a,b; do{a=1+Math.floor(Math.random()*9);b=1+Math.floor(Math.random()*9);}while((a+b)%2||a===b);
+    const s=(a+b)/100, d=Math.abs(a-b)/100;
+    return mcqFrom(`배경 별을 기준으로 6개월 간격으로 보았더니, 별이 한 번은 왼쪽으로 ${fmt(a/100)}″, 한 번은 오른쪽으로 ${fmt(b/100)}″ 떨어져 보였어요. 연주 시차는?`, fmt(s/2)+"″", [fmt(s)+"″",fmt(d)+"″",fmt(d/2)+"″",fmt(s*2)+"″"], `시차 = ${fmt(a/100)} + ${fmt(b/100)} = ${fmt(s)}″ → 연주 시차 = ${fmt(s)} ÷ 2 = ${fmt(s/2)}″`,{tag:"연주 시차"}); }
+  if(t===2){ const p=pick([1,0.5,0.25,0.2,0.1,0.05]); const d=1/p;
+    return mcqFrom(`연주 시차가 ${fmt(p)}″인 별까지의 거리는?`, fmt(d)+" pc", [fmt(p)+" pc",fmt(d*2)+" pc",fmt(d/2)+" pc",fmt(d*10)+" pc",fmt(d+1)+" pc"], `거리(pc) = 1 ÷ 연주 시차 = 1 ÷ ${fmt(p)} = ${fmt(d)} pc`,{tag:"연주 시차"}); }
+  const p1=pick([0.5,0.2,0.1]), p2=pick([0.05,0.04,0.02]); const aIsBig=Math.random()<.5;
+  const A=aIsBig?p1:p2, B=aIsBig?p2:p1;
+  return mcqFrom(`별 A의 연주 시차는 ${fmt(A)}″, 별 B의 연주 시차는 ${fmt(B)}″예요. 지구에서 더 가까운 별은?`, aIsBig?"별 A":"별 B", ["별 A","별 B","두 별의 거리가 같다","알 수 없다"], `연주 시차가 클수록 가까워요 → ${aIsBig?"A":"B"}`,{tag:"연주 시차"});
+}
+function genBright(){
+  const k=pick([2,3,4,5,10]), t=Math.floor(Math.random()*3), k2=k*k;
+  if(t===0) return mcqFrom(`같은 별이 지금보다 ${k}배 멀어지면, 지구에서 보이는 밝기는 지금의 몇 배일까?`, `1/${k2}배`, [`1/${k}배`,`${k2}배`,`1/${2*k}배`,`${k}배`,`1/${k2*k}배`], `거리 ${k}배 → ${k}² = ${k2} → 밝기 1/${k2}배`,{tag:"거리와 밝기"});
+  if(t===1) return mcqFrom(`같은 별이 지금 거리의 1/${k}로 가까워지면, 보이는 밝기는 지금의 몇 배일까?`, `${k2}배`, [`${k}배`,`1/${k2}배`,`${2*k}배`,`1/${k}배`,`${k2*k}배`], `거리 1/${k}배 → 밝기는 ${k}² = ${k2}배`,{tag:"거리와 밝기"});
+  return mcqFrom(`실제 밝기가 같은 두 별이 있어요. (가)는 r, (나)는 ${k}r 거리에 있어요. (가)는 (나)보다 몇 배 밝게 보일까?`, `${k2}배`, [`${k}배`,`1/${k2}배`,`${2*k}배`,`${k2*k}배`], `거리 차이 ${k}배 → ${k}² = ${k2}배`,{tag:"거리와 밝기"});
+}
+const MAGX = {1:"약 2.5배",2:"약 6.3배",5:"100배",10:"10000배"};
+function genMag(){
+  const d=pick([1,2,5,5,10]); const m1=Math.floor(Math.random()*7)-3; const m2=m1+d;
+  if(Math.random()<.25) return mcqFrom(`${sg(m1)}등급 별과 ${sg(m2)}등급 별 중 더 밝게 보이는 별은?`, `${sg(m1)}등급 별`, [`${sg(m2)}등급 별`,"두 별의 밝기가 같다","알 수 없다"], `등급 숫자가 작을수록 밝아요 → ${sg(m1)}등급`,{tag:"등급과 밝기"});
+  return mcqFrom(`${sg(m1)}등급 별은 ${sg(m2)}등급 별보다 몇 배 밝게 보일까?`, MAGX[d], Object.values(MAGX).concat([`${d}배`,`${d*2}배`]).filter(x=>x!==MAGX[d]), `${sg(m2)} − (${sg(m1)}) = ${d}등급 차이 → ${MAGX[d]}`+(d===2?" (2.5 × 2.5)":d===10?" (100 × 100)":""),{tag:"등급과 밝기"});
+}
+function genAbs(){
+  if(Math.random()<.5){
+    const kind=pick(["near","eq","far"]); const M=Math.round((Math.random()*10-4)*10)/10;
+    let m = kind==="eq"?M : kind==="near"? Math.round((M-(0.5+Math.random()*5))*10)/10 : Math.round((M+(0.5+Math.random()*5))*10)/10;
+    const ans = {near:"10 pc보다 가깝다",eq:"10 pc 거리에 있다",far:"10 pc보다 멀다"}[kind];
+    return mcqFrom(`어떤 별의 겉보기 등급은 ${sg(m)}, 절대 등급은 ${sg(M)}이에요. 이 별은?`, ans, ["10 pc보다 가깝다","10 pc 거리에 있다","10 pc보다 멀다","알 수 없다"].filter(x=>x!==ans), `겉보기 − 절대 = ${sg(Math.round((m-M)*10)/10)} → ${kind==="near"?"0보다 작으니 가깝다":kind==="eq"?"0이니 10 pc":"0보다 크니 멀다"}`,{tag:"겉보기·절대 등급"});
+  }
+  let st;
+  do{ st=["A","B","C"].map(n=>({n,m:Math.floor(Math.random()*12)-4,M:Math.floor(Math.random()*12)-6})); }
+  while(new Set(st.map(s=>s.m)).size<3||new Set(st.map(s=>s.M)).size<3||new Set(st.map(s=>s.m-s.M)).size<3);
+  const ask=pick([["가장 밝게 보이는 별",s=>s.m,"min","겉보기 등급이 가장 작은 별"],["실제로 가장 밝은 별",s=>s.M,"min","절대 등급이 가장 작은 별"],["가장 멀리 있는 별",s=>s.m-s.M,"max","(겉보기 − 절대)가 가장 큰 별"],["가장 가까이 있는 별",s=>s.m-s.M,"min","(겉보기 − 절대)가 가장 작은 별"]]);
+  const sorted=[...st].sort((x,y)=>ask[1](x)-ask[1](y)); const ans=(ask[2]==="min"?sorted[0]:sorted[2]).n;
+  const tbl=`<table><tr><th>별</th><th>겉보기 등급</th><th>절대 등급</th></tr>${st.map(s=>`<tr><td>${s.n}</td><td>${sg(s.m)}</td><td>${sg(s.M)}</td></tr>`).join("")}</table>`;
+  return mcqFrom(`표에서 ${ask[0]}은?${tbl}`, "별 "+ans, ["별 A","별 B","별 C"].filter(x=>x!=="별 "+ans).concat(["세 별이 모두 같다"]), `${ask[3]} → ${ans}`+(ask[2]&&ask[0].includes("멀")||ask[0].includes("가까")?` (A ${sg(st[0].m-st[0].M)}, B ${sg(st[1].m-st[1].M)}, C ${sg(st[2].m-st[2].M)})`:""),{tag:"겉보기·절대 등급"});
+}
+
+/* ===================== 저장 ===================== */
+const KEY="starquiz-v1";
+let S; try{ S=JSON.parse(localStorage.getItem(KEY))||{}; }catch(e){ S={}; }
+S.stars=S.stars||{}; S.wrong=S.wrong||{}; S.name=S.name||"";
+const save=()=>{ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} };
+const addWrong=it=>{ S.wrong[it.id]=Object.assign({},it,{at:Date.now()}); save(); };
+const delWrong=id=>{ delete S.wrong[id]; save(); };
+const starHtml=n=>"★★★".split("").map((s,i)=>i<n?`<i>★</i>`:"★").join("");
+const starsFor=r=>r>=1?3:r>=.8?2:r>=.6?1:0;
+
+/* ===================== 화면 ===================== */
+const app=document.getElementById("app");
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+let TIMER=null; const stopTimer=()=>{ if(TIMER){cancelAnimationFrame(TIMER);TIMER=null;} };
+
+function home(){
+  stopTimer(); window.scrollTo(0,0);
+  const days=Math.ceil((EXAM_DATE-new Date(new Date().toDateString()))/86400000);
+  const dd = days>0?`시험 D-${days}`: days===0?"오늘 시험! 파이팅":"";
+  const total=Object.values(S.stars).reduce((a,b)=>a+b,0);
+  const nWrong=Object.keys(S.wrong).length;
+  const modeBtn=(key,ic,nm)=>`<button class="mode" data-go="${key}"><span class="ic">${ic}</span><span class="nm">${nm}</span><span class="st">${starHtml(S.stars[key]||0)}</span></button>`;
+  app.innerHTML=`
+  <div class="top"><span class="brand">소소숲 · 중2 과학</span>${dd?`<span class="dday">${dd}</span>`:""}</div>
+  <h1>별과 우주<br>시험 대비 게임</h1>
+  <p class="lead">스테이지마다 별 3개를 모아 보세요.</p>
+  <div class="summary"><div><b>★ ${total}</b><span>모은 별 / 24</span></div><div><b>${nWrong}</b><span>오답 노트 문제</span></div></div>
+  <div class="name"><label>내 이름</label><input id="nm" maxlength="12" placeholder="결과 화면에 나와요" value="${esc(S.name)}"></div>
+  ${STAGES.map((s,i)=>`<div class="stage"><div class="stage-h"><div class="planet" style="background:${s.color}"></div><div><b>${i+1}. ${s.name}</b><small>${s.sub}</small></div></div>
+    ${modeBtn(s.id+"-card","🃏","개념 카드")}${modeBtn(s.id+"-ox","⚡","OX 스피드")}${s.id==="s1"?modeBtn("calc","🧮","계산 챌린지"):""}</div>`).join("")}
+  <div class="stage boss"><div class="stage-h"><div class="planet" style="background:radial-gradient(circle at 35% 35%,#fff3c4,#ffb020)"></div><div><b>보스. 실전 모의고사</b><small>객관식 12 + 서술형 4</small></div></div>${modeBtn("exam","🏆","실전 모의고사")}</div>
+  <button class="wrongbtn" data-go="wrong">📒 오답 노트 <span>${nWrong}문제</span></button>
+  <div class="foot">소소숲 · @sososoop_notes<br>기록은 이 폰에만 저장돼요</div>`;
+  app.querySelector("#nm").addEventListener("input",e=>{S.name=e.target.value.trim();save();});
+  app.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
+}
+
+function go(key){
+  if(key==="wrong") return wrongNote();
+  if(key==="calc"){ const gens=shuffle([genParallax,genParallax,genParallax,genBright,genBright,genMag,genMag,genMag,genAbs,genAbs]); return runQuiz({key,title:"계산 챌린지",sub:"별의 특성",items:gens.map(g=>g())}); }
+  if(key==="exam") return runQuiz({key,title:"실전 모의고사",sub:"객관식 12문제",items:EXAM.map((e,i)=>Object.assign({type:"mcq",id:"exam-"+i,tag:`${i+1}번`},e)),noShuffle:true,then:essays});
+  const [sid,mode]=key.split("-"); const st=STAGES.find(s=>s.id===sid);
+  if(mode==="card") return runQuiz({key,title:"개념 카드",sub:st.name,items:shuffle(CARDS[sid].map((c,i)=>({type:"card",id:`${sid}-c${i}`,q:c[0],ans:c[1],tag:st.name})))});
+  if(mode==="ox") return runQuiz({key,title:"OX 스피드",sub:st.name,timer:10,items:shuffle(OX[sid].map((o,i)=>({type:"ox",id:`${sid}-o${i}`,q:o[0],a:o[1],exp:o[2],tag:st.name}))).slice(0,10)});
+}
+
+function runQuiz(cfg){
+  const items=cfg.items; let idx=0, right=0, score=0, combo=0; const log=[];
+  const next=()=>{ idx++; if(idx<items.length) show(); else finish(); };
+  function header(){
+    return `<div class="qhead"><button class="close" id="cl">✕</button><div class="qtitle">${cfg.title}<small>${cfg.sub||""}</small></div>
+      ${cfg.timer?`<span class="pill ${combo>=2?"combo":""}">${combo>=2?"🔥"+combo+" 콤보":score+"점"}</span>`:`<span class="pill">${idx+1} / ${items.length}</span>`}</div>
+      <div class="prog"><i style="width:${idx/items.length*100}%"></i></div>${cfg.timer?`<div class="timer"><i id="tb" style="width:100%"></i></div>`:""}`;
+  }
+  function bindClose(){ app.querySelector("#cl").onclick=()=>{ stopTimer(); cfg.review?wrongNote():home(); }; }
+  function record(it, ok, given){
+    log.push({it,ok,given});
+    if(ok){ right++; combo++; score+=100+(cfg.timer?Math.max(0,combo-1)*20:0); if(cfg.review) delWrong(it.id); }
+    else { combo=0; addWrong(it); }
+  }
+  function show(){
+    stopTimer(); window.scrollTo(0,0);
+    const it=items[idx]; const tag=it.tag?`<div class="tag">${it.tag}</div>`:"";
+    if(it.type==="card"){
+      const qh=esc(it.q).replace("___",'<span class="blank" id="bl"></span>');
+      app.innerHTML=header()+`<div class="qcard pop">${tag}<div>${qh}</div></div><div class="spacer"></div>
+        <div class="actions" id="act"><button class="big" id="rv">정답 보기</button></div>`;
+      bindClose();
+      app.querySelector("#rv").onclick=()=>{
+        app.querySelector("#bl").outerHTML=`<span class="filled">${esc(it.ans)}</span>`;
+        app.querySelector("#act").innerHTML=`<div class="row2"><button class="big ng" id="no">몰랐어요</button><button class="big ok" id="yes">알았어요</button></div>`;
+        app.querySelector("#no").onclick=()=>{record(it,false);next();};
+        app.querySelector("#yes").onclick=()=>{record(it,true);next();};
+      };
+      return;
+    }
+    if(it.type==="ox"){
+      app.innerHTML=header()+`<div class="qcard pop">${tag}<div>${esc(it.q)}</div></div><div id="fbw"></div><div class="spacer"></div>
+        <div class="actions" id="act"><div class="oxrow"><button class="oxbtn o" data-v="1">O</button><button class="oxbtn x" data-v="0">X</button></div></div>`;
+      bindClose();
+      const answer=v=>{ stopTimer(); const ok=(v===it.a); record(it,ok,v);
+        feedback(ok, ok?"정답!":(v===null?"시간 초과!":"아쉬워요!"), `정답은 <b style="display:inline;font-size:inherit">${it.a?"O":"X"}</b> · ${esc(it.exp)}`); };
+      app.querySelectorAll(".oxbtn").forEach(b=>b.onclick=()=>answer(b.dataset.v==="1"));
+      if(cfg.timer) startTimer(cfg.timer,()=>answer(null));
+      return;
+    }
+    // mcq
+    const bogi=it.bogi?`<div class="bogi">${it.bogi}</div>`:"";
+    app.innerHTML=header()+`<div class="qcard pop" style="font-size:17px">${tag}<div>${it.q}</div>${bogi}</div><div id="fbw"></div><div class="spacer"></div>
+      <div class="actions" id="act">${it.opts.map((o,i)=>`<button class="opt" data-i="${i}"><b>${"①②③④⑤"[i]}</b><span>${esc(o)}</span></button>`).join("")}</div>`;
+    bindClose();
+    app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+      const v=+b.dataset.i, ok=v===it.a; record(it,ok,v);
+      app.querySelectorAll(".opt").forEach(x=>{x.disabled=true; const i=+x.dataset.i; if(i===it.a)x.classList.add("right"); else if(i===v)x.classList.add("wrong");});
+      feedback(ok, ok?"정답!":"아쉬워요!", esc(it.exp||""), true);
+    });
+  }
+  function feedback(ok,head,body,keepOpts){
+    const w=app.querySelector("#fbw");
+    w.innerHTML=`<div class="fb ${ok?"good":"bad"} pop"><b>${ok?"⭕ ":"❌ "}${head}</b>${body}</div>`;
+    if(!ok) app.querySelector(".qcard").classList.add("shake");
+    const act=app.querySelector("#act");
+    if(!keepOpts) act.innerHTML="";
+    const nb=document.createElement("button"); nb.className="big"; nb.textContent=idx+1<items.length?"다음 문제":"결과 보기"; nb.onclick=next;
+    act.appendChild(nb);
+    // 헤더 점수 갱신
+    const pill=app.querySelector(".pill"); if(pill&&cfg.timer){ pill.className="pill "+(combo>=2?"combo":""); pill.textContent=combo>=2?"🔥"+combo+" 콤보":score+"점"; }
+    setTimeout(()=>nb.isConnected&&nb.scrollIntoView({behavior:"smooth",block:"end"}),60);
+  }
+  function startTimer(sec,onEnd){
+    const t0=performance.now(); const bar=app.querySelector("#tb");
+    const tick=now=>{ const r=Math.max(0,1-(now-t0)/(sec*1000)); bar.style.width=(r*100)+"%"; bar.style.backgroundPosition=`${(1-r)*100}% 0`;
+      if(r<=0){ TIMER=null; onEnd(); } else TIMER=requestAnimationFrame(tick); };
+    TIMER=requestAnimationFrame(tick);
+  }
+  function finish(){
+    if(cfg.then) return cfg.then({right,total:items.length,log});
+    result({cfg,right,total:items.length,score:cfg.timer?score:0,log});
+  }
+  show();
+}
+
+function essays(prev){
+  let i=0, right=prev.right; const log=prev.log.slice();
+  function show(){
+    window.scrollTo(0,0);
+    const e=ESSAYS[i];
+    app.innerHTML=`<div class="qhead"><button class="close" id="cl">✕</button><div class="qtitle">실전 모의고사<small>서술형 ${13+i}번 · 스스로 채점</small></div><span class="pill">${i+1} / 4</span></div>
+      <div class="prog"><i style="width:${i/4*100}%"></i></div>
+      <div class="qcard pop" style="font-size:17px"><div class="tag">${13+i}번 서술형</div><div>${esc(e.q)}</div>
+      <textarea id="ta" placeholder="여기에 답을 써 보세요 (종이에 써도 돼요)"></textarea></div>
+      <div id="fbw"></div><div class="spacer"></div><div class="actions" id="act"><button class="big" id="rv">예시 답안 보기</button></div>`;
+    app.querySelector("#cl").onclick=home;
+    app.querySelector("#rv").onclick=()=>{
+      app.querySelector("#fbw").innerHTML=`<div class="fb good pop" style="background:#eef0ff;color:#2b2f55"><b>예시 답안</b>${esc(e.ex)}<div style="margin-top:8px;font-weight:700;color:#7c5cff">✔ ${esc(e.pt)}</div></div>`;
+      app.querySelector("#act").innerHTML=`<div class="row2"><button class="big ng" id="no">빠졌어요</button><button class="big ok" id="yes">들어갔어요</button></div>`;
+      const it={type:"essay",id:"essay-"+i,q:e.q,ex:e.ex,tag:`${13+i}번 서술형`};
+      app.querySelector("#no").onclick=()=>{ addWrong(it); log.push({it,ok:false}); step(); };
+      app.querySelector("#yes").onclick=()=>{ right++; delWrong(it.id); log.push({it,ok:true}); step(); };
+      setTimeout(()=>app.querySelector("#act")?.scrollIntoView({behavior:"smooth",block:"end"}),60);
+    };
+  }
+  const step=()=>{ i++; if(i<ESSAYS.length) show(); else result({cfg:{key:"exam",title:"실전 모의고사",sub:"객관식 12 + 서술형 4"},right,total:16,log}); };
+  show();
+}
+
+function result({cfg,right,total,score,log}){
+  stopTimer(); window.scrollTo(0,0);
+  const st=starsFor(right/total);
+  if(!cfg.review){ S.stars[cfg.key]=Math.max(S.stars[cfg.key]||0,st); save(); }
+  const msg=st===3?"완벽해요!":st===2?"거의 다 왔어요!":st===1?"좋아요, 한 번 더!":"오답 노트로 복습해요";
+  const now=new Date(); const when=`${now.getMonth()+1}월 ${now.getDate()}일 ${String(now.getHours()).padStart(2,"0")}:${String(now.getMinutes()).padStart(2,"0")}`;
+  const wrongs=log.filter(l=>!l.ok);
+  app.innerHTML=`<div class="result pop">
+    <div class="stars">${starHtml(st)}</div><h2>${msg}</h2>
+    <div class="score">${right} / ${total}</div>
+    ${score?`<div class="meta">점수 ${score}점</div>`:""}
+    <div class="meta">${esc(cfg.title)} · ${esc(cfg.sub||"")}<br>${S.name?esc(S.name)+" · ":""}${when}</div>
+    ${wrongs.length?`<div class="rlist">${wrongs.map(l=>`<div>❌ ${l.it.type==="card"?esc(l.it.q).replace("___","<em>"+esc(l.it.ans)+"</em>"):(l.it.q.length>60?esc(l.it.q.replace(/<[^>]+>/g," ").slice(0,60))+"…":l.it.q.replace(/<table[\s\S]*<\/table>/,""))}<br><em>${answerText(l.it)}</em></div>`).join("")}</div>`:""}
+  </div>
+  <p class="capture">📸 이 화면을 캡처해서 선생님께 보내 주세요</p>
+  <div class="actions"><button class="big" id="again">다시 하기</button><button class="big ghost" id="hm">처음으로</button></div>`;
+  app.querySelector("#again").onclick=()=>cfg.review?wrongNote():go(cfg.key);
+  app.querySelector("#hm").onclick=home;
+}
+function answerText(it){
+  if(it.type==="ox") return "정답 "+(it.a?"O":"X")+" · "+esc(it.exp);
+  if(it.type==="mcq") return "정답 "+"①②③④⑤"[it.a]+" "+esc(it.opts[it.a])+(it.exp?" · "+esc(it.exp):"");
+  if(it.type==="card") return "정답 "+esc(it.ans);
+  if(it.type==="essay") return "예시 답안: "+esc(it.ex);
+  return "";
+}
+
+function wrongNote(){
+  stopTimer(); window.scrollTo(0,0);
+  const list=Object.values(S.wrong).sort((a,b)=>b.at-a.at);
+  app.innerHTML=`<div class="qhead"><button class="close" id="cl">✕</button><div class="qtitle">오답 노트<small>다시 맞히면 노트에서 빠져요</small></div><span class="pill">${list.length}문제</span></div>
+    ${list.length?`<div class="actions" style="padding:0 0 12px"><button class="big" id="re">오답만 다시 풀기</button></div>`+
+      list.map(it=>`<div class="wcard"><small>${esc(it.tag||"")}</small><div>${it.type==="card"?esc(it.q).replace("___","____"):it.q.replace(/<table[\s\S]*<\/table>/," (표 문제)")}</div><div class="ans">${answerText(it)}</div></div>`).join("")
+      :`<div class="empty">오답 노트가 비어 있어요.<br>문제를 풀다 틀리면 여기 모여요.</div>`}
+    <div class="foot">소소숲 · @sososoop_notes</div>`;
+  app.querySelector("#cl").onclick=home;
+  const re=app.querySelector("#re");
+  if(re) re.onclick=()=>{
+    const items=shuffle(list.filter(i=>i.type!=="essay")).slice(0,15);
+    const ess=list.filter(i=>i.type==="essay");
+    if(!items.length){ alert("서술형은 실전 모의고사에서 다시 풀어 보세요."); return; }
+    runQuiz({key:"wrong",title:"오답 다시 풀기",sub:`${items.length}문제`+(ess.length?` (서술형 ${ess.length}개는 모의고사에서)`:""),items,review:true});
+  };
+}
+
+home();
+</script>
+</body>
+</html>
